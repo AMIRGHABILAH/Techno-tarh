@@ -1,0 +1,152 @@
+
+
+  <MainLayout>
+    <!-- هدر -->
+    <header class="content-header">
+      <div>
+        <h1>مدیریت طراحی‌ها</h1>
+        <p class="welcome-text">همه طراحی‌های شما در یک نگاه</p>
+      </div>
+      <!-- <button class="btn-primary" @click="openCreateModal">
+        <span class="btn-icon">+</span>
+        طراحی جدید
+      </button> -->
+          <button class="btn-primary" @click="createNewDesign">
+        + طراحی جدید
+      </button>
+    </header>
+
+    <!-- فیلترها و جستجو -->
+    <div class="filters-section">
+      <div class="search-box">
+        <input 
+          type="text" 
+          v-model="searchQuery" 
+          placeholder="جستجو در طراحی‌ها..."
+          @input="handleSearch"
+        >
+        <span class="search-icon">🔍</span>
+        <button v-if="searchQuery" @click="clearSearch" class="clear-search">✕</button>
+      </div>
+
+      <div class="filter-tabs">
+        <button 
+          :class="['filter-btn', { active: activeFilter === 'all' }]"
+          @click="setFilter('all')"
+        >
+          <span>همه</span>
+          <span class="filter-count">{{ store.pagination.count }}</span>
+        </button>
+        <button 
+          :class="['filter-btn', { active: activeFilter === 'personal' }]"
+          @click="setFilter('personal')"
+        >
+          <span>طراحی‌های من</span>
+          <span class="filter-count">{{ store.personalDesigns.length }}</span>
+        </button>
+        <button 
+          :class="['filter-btn', { active: activeFilter === 'templates' }]"
+          @click="setFilter('templates')"
+        >
+          <span>قالب‌ها</span>
+          <span class="filter-count">{{ store.templates.length }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- نمایش خطا -->
+    <Transition name="fade">
+      <div v-if="store.error" class="error-banner">
+        <div class="error-content">
+          <span class="error-icon">⚠️</span>
+          <span>{{ store.error }}</span>
+        </div>
+        <button @click="store.clearError" class="close-btn">✕</button>
+      </div>
+    </Transition>
+
+    <!-- لودینگ -->
+    <div v-if="store.loading" class="loading-state">
+      <div class="spinner"></div>
+      <p class="loading-text">در حال دریافت اطلاعات...</p>
+    </div>
+
+    <!-- لیست طراحی‌ها -->
+    <template v-else>
+      <div v-if="filteredDesigns.length === 0" class="empty-state">
+        <div class="empty-icon">🎨</div>
+        <h3>هنوز طراحی‌ای ندارید!</h3>
+        <p class="empty-description">
+          {{ activeFilter === 'templates' ? 'قالبی برای نمایش وجود ندارد' : 'با کلیک روی دکمه "طراحی جدید" اولین کارت ویزیت خود را بسازید' }}
+        </p>
+        <button class="btn-primary" @click="openCreateModal">
+          {{ activeFilter === 'templates' ? 'مشاهده قالب‌های بیشتر' : 'شروع طراحی' }}
+        </button>
+      </div>
+
+      <div v-else class="designs-grid">
+        <TransitionGroup name="list" tag="div" class="designs-grid-inner">
+          <DesignCard
+            v-for="design in filteredDesigns"
+            :key="design.id"
+            :design="design"
+            @click="openDesign(design.id)"
+            @edit="openDesign(design.id)"
+            @duplicate="duplicateDesign(design)"
+            @delete="confirmDelete(design)"
+            :show-delete="!design.is_template"
+          />
+        </TransitionGroup>
+      </div>
+
+      <!-- دیالوگ حذف -->
+      <ModalDialog
+        v-if="showDeleteDialog"
+        title="حذف طراحی"
+        :show="showDeleteDialog"
+        @close="showDeleteDialog = false"
+        @confirm="deleteDesign"
+      >
+        <p class="delete-message">
+          آیا از حذف "<span class="highlight">{{ designToDelete?.name }}</span>" اطمینان دارید؟
+        </p>
+        <p class="delete-warning">این اقدام قابل بازگشت نیست!</p>
+      </ModalDialog>
+
+      <!-- دیالوگ ایجاد طراحی جدید
+      <ModalDialog
+        v-if="showCreateDialog"
+        title="ایجاد طراحی جدید"
+        :show="showCreateDialog"
+        @close="showCreateDialog = false"
+        @confirm="createDesign"
+        confirm-text="ایجاد"
+        :disable-confirm="!newDesignName"
+      >
+        <form @submit.prevent="createDesign" class="create-form">
+          <div class="form-group">
+            <label for="design-name">نام طراحی</label>
+            <input 
+              id="design-name"
+              type="text" 
+              v-model="newDesignName" 
+              required
+              placeholder="مثال: کارت ویزیت شخصی"
+              class="form-input"
+              autofocus
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="template-select">قالب اولیه (اختیاری)</label>
+            <select id="template-select" v-model="selectedTemplate" class="form-select">
+              <option value="">شروع با صفحه خالی</option>
+              <option v-for="template in store.templates" :key="template.id" :value="template.id">
+                {{ template.name }}
+              </option>
+            </select>
+          </div>
+        </form>
+      </ModalDialog> -->
+    </template>
+  </MainLayout>

@@ -1,0 +1,219 @@
+<div class="landing">
+
+<header class="header">
+  <div class="container nav">
+    
+    <!-- بخش لوگو آپدیت شد (سایز لوگو و متن بزرگتر شد) -->
+    <div class="logo" style="display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 1.4rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="55" height="55">
+        <!-- Instagram-like Frame -->
+        <rect x="30" y="30" width="140" height="140" fill="none" stroke="#8B5CF6" stroke-width="12" rx="35"/>
+        <!-- Color Palette Dots -->
+        <circle cx="70" cy="70" r="16" fill="#EF4444"/>
+        <circle cx="130" cy="70" r="16" fill="#F59E0B"/>
+        <circle cx="70" cy="130" r="16" fill="#10B981"/>
+        <!-- Content Escaping the Frame -->
+        <rect x="110" y="110" width="50" height="35" fill="#3B82F6" rx="6" transform="rotate(-15 130 130)"/>
+      </svg>
+      <span>تکنو طرح</span>
+    </div>
+    <!-- پایان بخش لوگو -->
+
+    <nav class="menu">
+      <a href="#features" @click.prevent="scrollTo('features')">ویژگی‌ها</a>
+      <a href="#about" @click.prevent="scrollTo('about')">درباره ما</a>
+      <a href="#contact" @click.prevent="scrollTo('contact')">تماس</a>
+    </nav>
+
+    <div class="auth-buttons">
+       <router-link
+        :to="isLoggedIn ? '/dashboard' : '/login'"
+        class="btn register"
+      >
+      {{ isLoggedIn ? "داشبورد" : "ورود" }}
+      </router-link>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+
+    <div class="hero-text">
+      <h1>طراحی کارت ویزیت آنلاین</h1>
+      <p>
+        با ویرایشگر حرفه‌ای ما در چند دقیقه کارت ویزیت خود را طراحی کنید.
+      </p>
+
+      <div class="hero-buttons">
+        <router-link to="/dashboard" class="btn primary">
+          شروع طراحی
+        </router-link>
+
+        <router-link to="/login" class="btn secondary">
+          ورود
+        </router-link>
+      </div>
+    </div>
+
+    <div class="hero-image">
+    
+<section class="hero-designs">
+
+  <div class="cards">
+
+    <!-- Instagram -->
+    <div class="card instagram">
+      <div class="preview insta-preview">
+        <div class="insta-header"></div>
+        <div class="insta-image"></div>
+        <div class="insta-actions"></div>
+      </div>
+      <span>قالب‌های آماده پست اینستاگرام</span>
+    </div>
+
+    <!-- Business Card -->
+    <div class="card business">
+      <div class="preview business-preview">
+        <div class="line name"></div>
+        <div class="line"></div>
+        <div class="line small"></div>
+      </div>
+      <span>کارت ویزیت</span>
+    </div>
+
+    <!-- Banner -->
+    <div class="card banner">
+      <div class="preview banner-preview">
+        <div class="banner-title"></div>
+        <div class="banner-btn"></div>
+      </div>
+      <span>ساخت بنر</span>
+    </div>
+
+  </div>
+
+</section>
+
+    </div> 
+
+  </div>
+</section>
+
+<section id="features" class="features">
+  <div class="container">
+    <h2>ویژگی‌های پلتفرم</h2>
+    <div class="features-grid">
+
+      <div class="feature">
+        <h3>ویرایشگر حرفه‌ای</h3>
+        <p>طراحی کارت با ابزارهای پیشرفته و سریع.</p>
+      </div>
+
+      <div class="feature">
+        <h3>قالب‌های آماده</h3>
+        <p>صدها قالب حرفه‌ای برای شروع سریع.</p>
+      </div>
+
+      <div class="feature">
+        <h3>دانلود فوری</h3>
+        <p>خروجی با کیفیت برای چاپ.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="container about-grid">
+    <div class="about-text">
+      <h2>درباره ما</h2>
+      <p>
+        ما یک پلتفرم طراحی آنلاین هستیم که به شما کمک می‌کند
+        کارت ویزیت حرفه‌ای خود را بدون نیاز به نرم‌افزارهای پیچیده طراحی کنید.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="container">
+    <h2>تماس با ما</h2>
+    <p class="contact-subtitle">از طریق راه‌های زیر با ما در ارتباط باشید</p>
+    
+    <div class="contact-cards">
+      <!-- تلگرام -->
+      <a href="https://t.me/tecnotarh" target="_blank" class="contact-card telegram">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.46-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.015-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.441-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.145.119.185.28.204.395.019.115.042.378.023.583z"/>
+          </svg>
+        </div>
+        <span class="contact-label">تلگرام</span>
+      </a>
+
+      <!-- ایتا -->
+      <a href="https://eitaa.com/tecnotarh" target="_blank" class="contact-card eitaa">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.5 7.5l-1.5 7.5s-.15.45-.45.45-.45-.15-.45-.15l-3.6-2.7-1.8 1.8s-.15.15-.3.15l.15-3.15 7.2-4.5s.3-.15.3.15.45.3.15.45z"/>
+          </svg>
+        </div>
+        <span class="contact-label">ایتا</span>
+      </a>
+
+      <!-- بله -->
+      <a href="https://ble.ir/tecnotarh" target="_blank" class="contact-card bale">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm3 16.5H9c-.828 0-1.5-.672-1.5-1.5V9c0-.828.672-1.5 1.5-1.5h6c.828 0 1.5.672 1.5 1.5v6c0 .828-.672 1.5-1.5 1.5z"/>
+          </svg>
+        </div>
+        <span class="contact-label">بله</span>
+      </a>
+
+      <!-- تماس تلفنی -->
+      <a href="tel:+989139538390" class="contact-card phone">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+          </svg>
+        </div>
+        <span class="contact-label">۰۹۱۳۹۵۳۸۳۹۰</span>
+      </a>
+
+      <!-- ایمیل -->
+      <a href="mailto:tecnotarh@gmail.com" class="contact-card email">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </div>
+        <span class="contact-label">tecnotarh@gmail.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <h3>طرح آرا</h3>
+      <p>پلتفرم طراحی آنلاین کارت ویزیت و قالب</p>
+    </div>
+
+    <div>
+      <h4>لینک‌ها</h4>
+      <router-link to="/login">ورود</router-link>
+    </div>
+
+    <div>
+      <h4>تماس</h4>
+      <p>tecnotarh@gmail.com</p>
+      <p>09139538390</p>
+    </div>
+  </div>
+</footer>
+
+</div>
+

@@ -1,0 +1,34 @@
+# Django Core
+Django==4.2.11
+
+# REST Framework
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.0
+
+# CORS (برای ارتباط با Vue)
+django-cors-headers==4.3.1
+
+# Database (PostgreSQL)
+psycopg2-binary==2.9.9
+
+# Image/File handling
+Pillow==10.1.0
+
+# HTTP Requests (برای درگاه پرداخت و OTP)
+requests==2.31.0
+
+# Utilities
+python-decouple==3.8
+django-filter==23.5
+
+# Production
+gunicorn==21.2.0
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# PSD File Handling
+psd-tools==1.9.32
+
+# Additional utilities (اختیاری)
+# whitenoise==6.6.0  # برای سرویس فایل‌های static در production

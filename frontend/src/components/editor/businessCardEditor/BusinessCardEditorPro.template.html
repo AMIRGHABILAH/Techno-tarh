@@ -1,0 +1,286 @@
+<div class="editor">
+  <!-- Toolbar -->
+  <div class="toolbar">
+  <button class="hamburger-btn" @click="toggleMobileMenu">☰</button>
+
+  <select v-model="selectedSize" @change="changeCanvasSize" style="width: 15%;">
+    <option value="business">کارت ویزیت (900×500)</option>
+    <option value="instagram">پست اینستاگرام (1080×1080)</option>
+    <option value="story">استوری (1080×1920)</option>
+  </select>
+
+  <button @click="addText"><span>🅣</span> متن</button>
+  <button @click="addRect"><span>▭</span> مستطیل</button>
+  <button @click="addCircle"><span>⬤</span> دایره</button>
+  <button @click="addLine"><span>／</span> خط</button>
+  <button @click="addTriangle"><span>▲</span> مثلث</button>
+  <button @click="addEllipse"><span>⬭</span> بیضی</button>
+  <button @click="addStar"><span>★</span> ستاره</button>
+
+  <label class="upload">
+    <span>📷</span> تصویر
+    <input type="file" @change="uploadImage"/>
+  </label>
+
+    <!-- دکمه آپلود PSD -->
+  <label class="upload psd-upload">
+    <span>🎨</span> آپلود PSD
+    <input type="file" @change="uploadPSD" accept=".psd"/>
+  </label>
+
+  <!-- دکمه خروجی PNG - همیشه نمایش داده میشه -->
+  <button class="export-btn" v-if="designId" @click="exportPNG">
+    <span>⬇</span> خروجی PNG
+  </button>
+
+  <!-- دکمه شرطی: فقط یکی از این دو نمایش داده میشه -->
+  <template v-if="designId">
+    <!-- حالت ویرایش -->
+    <button class="save-btn" @click="saveDesign">
+      <span>💾</span> ذخیره تغییرات
+    </button>
+  </template>
+  <template v-else>
+    <!-- حالت طراحی جدید -->
+    <button class="next-btn" @click="goToFinalize">
+      مرحله بعد →
+    </button>
+  </template>
+</div>
+
+  <div v-if="isAdmin" class="template-option">
+    <label>
+      آیا این تمپلیت قالب آماده است؟
+      <input type="checkbox" v-model="isTemplate">
+    </label>
+  </div>
+
+  <div class="workspace">
+    <!-- سایدبار اصلی (دسکتاپ) -->
+    <div class="left-sidebar" :class="{ open: sidebarOpen }">
+      <!-- Settings -->
+      <div v-if="selectedNode" class="panel">
+        <div class="panel-header">
+          <h3>تنظیمات</h3>
+          <button class="close-panel-btn" @click="closeSidebar">✕</button>
+        </div>
+
+        <div class="color-picker-wrapper">
+          <label>رنگ</label>
+          <div class="color-box" @click="openColorPicker" :style="{ backgroundColor: fillColor }"></div>
+          <input type="color" ref="colorInput" v-model="fillColor" @input="updateFill" />
+        </div>
+
+        <div v-if="isText" class="field">
+          <label>اندازه فونت</label>
+          <input type="number" v-model="fontSize" @input="updateFont"/>
+        </div>
+
+        <button class="delete" @click="deleteNode">حذف</button>
+        
+        <div v-if="isText && isAdmin" class="field">
+          <select v-model="selectedPlaceholder" @change="applyPlaceholder" style="padding:9px;">
+            <option value="">متن معمولی</option>
+            <option v-for="field in userFields" :key="field.key" :value="field.key">
+              {{ field.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Layers (دسکتاپ) -->
+      <div class="layers-panel" :class="{ collapsed: layersCollapsed }">
+        <div class="layers-header">
+          <h3>لایه‌ها</h3>
+          <button class="toggle-layers-btn" @click="toggleLayers">
+            {{ layersCollapsed ? '▼' : '▲' }}
+          </button>
+        </div>
+
+        <div class="layers-content" v-show="!layersCollapsed">
+          <draggable
+            v-model="layersList"
+            item-key="id"
+            @end="onLayerDragEnd"
+            animation="200"
+          >
+            <template #item="{ element }">
+              <div
+                class="layer-item"
+                :class="{ active: activeLayer === element.id }"
+                @click="handleLayerSelection(element.id)"
+              >
+                <span class="layer-title">
+                  ☰ {{ element.displayName }}
+                </span>
+                <div class="layer-actions">
+                  <button
+                    class="delete-layer"
+                    @click.stop="removeLayer(element.id)"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            </template>
+          </draggable>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas -->
+    <div class="canvas-area" ref="canvasArea">
+      <div class="canvas-scroll" ref="canvasScroll">
+        <div id="canvas"></div>
+      </div>
+      
+      <!-- Zoom Controls -->
+      <div class="zoom-controls">
+        <button class="zoom-btn" @click="zoomOut" title="کوچک‌نمایی">−</button>
+        <span class="zoom-level">{{ Math.round(zoomLevel * 100) }}%</span>
+        <button class="zoom-btn" @click="zoomIn" title="بزرگ‌نمایی">+</button>
+        <button class="zoom-btn fit-btn" @click="fitToScreen" title="نمایش کامل">
+          <span>⬚</span> Fit
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Layers Panel (بالای کانواس) -->
+    <div class="mobile-layers-panel">
+      <div class="mobile-layers-header">
+        <h3>لایه‌ها ({{ layersList.length }})</h3>
+        <button class="mobile-layers-toggle" @click="toggleMobileLayers">
+          {{ mobileLayersExpanded ? '▼' : '▲' }}
+        </button>
+      </div>
+      
+      <div class="mobile-layers-content" v-show="mobileLayersExpanded">
+        <div
+          v-for="layer in layersList"
+          :key="layer.id"
+          class="mobile-layer-item"
+          :class="{ active: activeLayer === layer.id }"
+          @click="handleLayerSelection(layer.id)"
+        >
+          <span>{{ layer.displayName }}</span>
+          <button
+            class="mobile-layer-delete"
+            @click.stop="removeLayer(layer.id)"
+          >
+            ✕
+          </button>
+        </div>
+        <div v-if="layersList.length === 0" class="mobile-layer-item" style="opacity: 0.5;">
+          <span>بدون لایه</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- پنل تنظیمات سریع (زیر لایه‌ها در موبایل) -->
+    <div class="quick-settings-panel" v-show="selectedNode ">
+      <div class="quick-settings-content">
+        <div class="quick-color-wrapper">
+          <label>رنگ</label>
+          <div class="color-box small" @click="openColorPicker" :style="{ backgroundColor: fillColor }"></div>
+        </div>
+        
+        <div v-if="isText" class="quick-font-wrapper">
+          <label>فونت</label>
+          <input type="number" v-model="fontSize" @input="updateFont" min="8" max="200"/>
+        </div>
+        
+        <button class="quick-delete" @click="deleteNode">حذف</button>
+        
+        <select v-if="isText && isAdmin" v-model="selectedPlaceholder" @change="applyPlaceholder" class="quick-placeholder">
+          <option value="">متن معمولی</option>
+          <option v-for="field in userFields" :key="field.key" :value="field.key">
+            {{ field.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- پنل تنظیمات شناور (موبایل - تمام صفحه) -->
+  <div class="floating-panel" :class="{ open: floatingPanelOpen }">
+    <div v-if="selectedNode" class="panel">
+      <div class="panel-header">
+        <h3>تنظیمات</h3>
+        <button class="close-panel-btn" @click="floatingPanelOpen = false">✕</button>
+      </div>
+
+      <div class="color-picker-wrapper">
+        <label>رنگ</label>
+        <div class="color-box" @click="openColorPicker" :style="{ backgroundColor: fillColor }"></div>
+        <input type="color" ref="colorInput" v-model="fillColor" @input="updateFill" />
+      </div>
+
+      <div v-if="isText" class="field">
+        <label>اندازه فونت</label>
+        <input type="number" v-model="fontSize" @input="updateFont"/>
+      </div>
+
+      <button class="delete" @click="deleteNode">حذف</button>
+      
+      <div v-if="isText && isAdmin" class="field">
+        <select v-model="selectedPlaceholder" @change="applyPlaceholder" style="padding:9px;">
+          <option value="">متن معمولی</option>
+          <option v-for="field in userFields" :key="field.key" :value="field.key">
+            {{ field.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" v-show="mobileMenuOpen" @click="closeMobileMenu"></div>
+  
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" :class="{ active: mobileMenuOpen }">
+    <div class="mobile-menu-header">
+      <h3>ابزارها</h3>
+      <button class="close-menu-btn" @click="closeMobileMenu">✕</button>
+    </div>
+    
+    <div class="mobile-tools-grid">
+      <button class="mobile-tool-btn" @click="addText(); closeMobileMenu()">
+        <span>🅣</span> متن
+      </button>
+      <button class="mobile-tool-btn" @click="addRect(); closeMobileMenu()">
+        <span>▭</span> مستطیل
+      </button>
+      <button class="mobile-tool-btn" @click="addCircle(); closeMobileMenu()">
+        <span>⬤</span> دایره
+      </button>
+      <button class="mobile-tool-btn" @click="addLine(); closeMobileMenu()">
+        <span>／</span> خط
+      </button>
+      <button class="mobile-tool-btn" @click="addTriangle(); closeMobileMenu()">
+        <span>▲</span> مثلث
+      </button>
+      <button class="mobile-tool-btn" @click="addEllipse(); closeMobileMenu()">
+        <span>⬭</span> بیضی
+      </button>
+      <button class="mobile-tool-btn" @click="addStar(); closeMobileMenu()">
+        <span>★</span> ستاره
+      </button>
+      <label class="mobile-tool-btn" @click="closeMobileMenu()">
+        <span>📷</span> تصویر
+        <input type="file" @change="uploadImage" style="display: none;"/>
+      </label>
+    </div>
+  </div>
+
+
+</div>
+
+  <div class="toast-container" v-if="toastVisible">
+  <div :class="['toast', `toast-${toastType}`]">
+    <div class="toast-body">
+      <span class="toast-emoji">{{ toastType === 'success' ? '✅' : toastType === 'error' ? '❌' : toastType === 'warning' ? '⚠️' : 'ℹ️' }}</span>
+      <span class="toast-text">{{ toastMessage }}</span>
+    </div>
+    <button class="toast-close-btn" @click="toastVisible = false">×</button>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+  <MainLayout>
+
+    <div class="settings-page">
+
+      <h1>تنظیمات حساب</h1>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button
+          v-for="tab in tabs"
+          :key="tab.key"
+          :class="['tab', { active: activeTab === tab.key }]"
+          @click="activeTab = tab.key"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
+
+      <div class="card">
+
+        <!-- ACCOUNT -->
+<template v-if="activeTab === 'account'">
+
+  <div class="account-grid">
+
+    <div class="input-group">
+      <label>نام کاربری</label>
+      <input v-model="form.username" disabled>
+    </div>
+
+    <div class="input-group">
+      <label>ایمیل</label>
+      <input v-model="form.email">
+    </div>
+
+    <div class="input-group">
+      <label>نام</label>
+      <input v-model="form.first_name">
+    </div>
+
+    <div class="input-group">
+      <label>نام خانوادگی</label>
+      <input v-model="form.last_name">
+    </div>
+
+    <div class="input-group">
+      <label>شرکت</label>
+      <input v-model="form.company">
+    </div>
+
+    <div class="input-group">
+      <label>شماره موبایل</label>
+      <input v-model="form.phone_number">
+    </div>
+
+  </div>
+
+  <button class="save-btn" @click="saveSettings">
+    ذخیره تغییرات
+  </button>
+
+</template>
+
+
+        <!-- PROFILE -->
+<!-- PROFILE TAB -->
+<template v-if="activeTab === 'profile'">
+  
+  <label>پروفایل</label>
+
+  <div class="avatar-preview">
+    <img
+      v-if="avatarPreview"
+      :src="avatarPreview"
+      alt="Avatar Preview"
+    />
+
+    <div v-else class="default-avatar">
+      <span>{{ defaultAvatarText }}</span>
+    </div>
+  </div>
+
+  <!-- دکمه حذف پروفایل -->
+  <button 
+    v-if="avatarPreview"
+    class="delete-avatar-btn"
+    @click="deleteAvatar"
+  >
+    حذف پروفایل
+  </button>
+
+  <!-- drop zone -->
+  <div
+    class="drop-zone"
+    @dragover.prevent
+    @drop.prevent="handleDrop"
+    @click="selectFile"
+  >
+    <p>Drag & Drop avatar here</p>
+    <span>یا کلیک کنید</span>
+  </div>
+
+  <input
+    ref="fileInput"
+    type="file"
+    accept="image/*"
+    @change="handleFile"
+    hidden
+  >
+  <!-- ✅ دکمه ذخیره -->
+  <button
+    v-if="activeTab !== 'security'"
+    class="save-btn"
+    @click="saveSettings"
+  >
+    ذخیره اطلاعات
+  </button>
+</template>
+
+
+        <!-- SECURITY -->
+<!-- SECURITY -->
+<template v-if="activeTab === 'security'">
+
+  <label>رمز عبور فعلی</label>
+  <input
+    type="password"
+    v-model="passwordForm.current_password"
+  >
+
+  <label>رمز عبور جدید</label>
+  <input
+    type="password"
+    v-model="passwordForm.new_password"
+  >
+
+  <label>تکرار رمز عبور جدید</label>
+  <input
+    type="password"
+    v-model="passwordForm.confirm_password"
+  >
+
+  <button
+    class="save-btn"
+    @click="changePassword"
+  >
+    تغییر رمز عبور
+  </button>
+
+</template>
+
+
+      </div>
+    </div>
+
+  </MainLayout>

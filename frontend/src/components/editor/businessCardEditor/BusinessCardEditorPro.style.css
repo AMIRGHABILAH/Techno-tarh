@@ -1,0 +1,1001 @@
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.color-picker-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 1em;
+  align-items: center;
+}
+
+.color-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.color-box:hover {
+  transform: scale(1.05);
+  border-color: #888;
+}
+
+input[type="color"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.left-sidebar {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100%;
+  min-height: 0;
+  transition: transform 0.3s ease;
+  background: #1e293b;
+}
+
+.layers-panel {
+  flex: 1;
+  width: 100%;
+  background: #1e293b;
+  padding: 15px;
+  overflow-y: auto;
+  border-left: 1px solid #334155;
+  min-height: 0;
+}
+
+.layers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.layers-header h3 {
+  margin-bottom: 0;
+  font-size: 16px;
+  color: #e2e8f0;
+}
+
+.toggle-layers-btn {
+  background: #334155;
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+.toggle-layers-btn:hover {
+  background: #475569;
+}
+
+.layers-content {
+  display: block;
+}
+
+.layer-item {
+  background: #334155;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  cursor: grab;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.layer-item:active {
+  cursor: grabbing;
+  background: #6366f1;
+  border: 1px solid #818cf8;
+}
+
+.layer-item.active {
+  background: #6366f1;
+  border: 1px solid #818cf8;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+}
+
+.layer-actions button {
+  background: #64748b;
+  border: none;
+  color: white;
+  padding: 4px 6px;
+  margin-left: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.layer-actions button:hover {
+  background: #93a7c3;
+}
+
+.delete-layer {
+  background: #ef4444 !important;
+}
+
+.name-input {
+  padding: 9px;
+}
+
+.template-option {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+  padding: 8px;
+}
+
+.editor {
+  direction: rtl;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0f172a;
+  color: white;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+/* toolbar */
+.toolbar {
+  flex-shrink: 0;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  border-bottom: 1px solid #333;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  gap: 3px;
+}
+
+.hamburger-btn {
+  background: #334155;
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+
+
+}
+
+.toolbar button,
+.upload {
+  background: #334155;
+  border: none;
+  padding: 6px 10px;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  margin: 0 3px;
+  font-size: 13px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.upload input {
+  display: none;
+}
+
+.toolbar select {
+  background: #334155;
+  border: none;
+  padding: 6px 8px;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  margin: 0 3px;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+/* workspace */
+.workspace {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+  position: relative;
+}
+
+/* panel */
+.panel {
+  width: 100%;
+  background: #1e293b;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #334155;
+  flex-shrink: 0;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.panel-header h3 {
+  margin: 0;
+}
+
+.close-panel-btn {
+  background: #ef4444;
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.field {
+  margin-bottom: 15px;
+  flex-direction: column;
+  display: flex;
+}
+
+.delete {
+  background: #ef4444;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  color: white;
+  border-radius: 6px;
+}
+
+/* canvas */
+.canvas-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  position: relative;
+}
+
+.canvas-scroll {
+  padding: 20px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+#canvas {
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  display: block;
+  flex-shrink: 0;
+  margin: 0 auto;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* کنترل‌های زوم */
+.zoom-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  background: rgba(30, 41, 59, 0.95);
+  padding: 8px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.zoom-btn {
+  background: #334155;
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.zoom-btn:hover {
+  background: #475569;
+}
+
+.zoom-btn.fit-btn {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+  background: #6366f1;
+}
+
+.zoom-btn.fit-btn:hover {
+  background: #7c3aed;
+}
+
+.zoom-level {
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 14px;
+  min-width: 60px;
+  justify-content: center;
+}
+
+/* منوی همبرگری موبایل */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: none;
+}
+
+.mobile-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1e293b;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  z-index: 1001;
+  display: none;
+  max-height: 70vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu.active {
+  transform: translateY(0);
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #334155;
+}
+
+.mobile-menu-header h3 {
+  color: white;
+  font-size: 18px;
+}
+
+.close-menu-btn {
+  background: #ef4444;
+  border: none;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.mobile-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.mobile-tool-btn {
+  background: #334155;
+  border: none;
+  padding: 15px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s;
+}
+
+.mobile-tool-btn:hover {
+  background: #475569;
+}
+
+/* Mobile Layers Panel */
+.mobile-layers-panel {
+  display: none;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  flex-shrink: 0;
+}
+
+.mobile-layers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  cursor: pointer;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.mobile-layers-header h3 {
+  font-size: 14px;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.mobile-layers-toggle {
+  background: #334155;
+  border: none;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.mobile-layers-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 15px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #6366f1 #334155;
+  white-space: nowrap;
+  background: #1e293b;
+  min-height: 60px;
+  align-items: center;
+}
+
+.mobile-layer-item {
+  background: #334155;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 14px;
+  transition: 0.2s;
+  min-width: 100px;
+  justify-content: space-between;
+}
+
+.mobile-layer-item.active {
+  background: #6366f1;
+  border: 1px solid #818cf8;
+}
+
+.mobile-layer-delete {
+  background: #ef4444;
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mobile-layers-content::-webkit-scrollbar {
+  height: 4px;
+}
+
+.mobile-layers-content::-webkit-scrollbar-track {
+  background: #334155;
+  border-radius: 2px;
+}
+
+.mobile-layers-content::-webkit-scrollbar-thumb {
+  background: #6366f1;
+  border-radius: 2px;
+}
+
+/* پنل شناور تنظیمات */
+.floating-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #1e293b;
+  z-index: 99;
+  overflow-y: auto;
+  display: none;
+}
+
+.floating-panel.open {
+  display: block;
+}
+
+/* Quick Settings Panel - زیر لایه‌ها در موبایل */
+.quick-settings-panel {
+  display: none;
+  background: #1e293b;
+  border-top: 1px solid #334155;
+  padding: 8px 15px;
+  flex-shrink: 0;
+}
+
+.quick-settings-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.quick-color-wrapper,
+.quick-font-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quick-color-wrapper label,
+.quick-font-wrapper label {
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.color-box.small {
+  width: 28px;
+  height: 28px;
+}
+
+.quick-font-wrapper input {
+  width: 60px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: none;
+  background: #334155;
+  color: white;
+  font-size: 13px;
+}
+
+.quick-delete {
+  background: #ef4444;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-right: auto;
+}
+
+.quick-placeholder {
+  background: #334155;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  min-width: 120px;
+}
+
+/* استایل دکمه‌های toolbar */
+.export-btn {
+  background: #f59e0b !important;
+}
+
+.export-btn:hover {
+  background: #d97706 !important;
+}
+
+.save-btn {
+  background: #10b981 !important;
+}
+
+.save-btn:hover {
+  background: #059669 !important;
+}
+
+.next-btn {
+  background: #6366f1 !important;
+}
+
+.next-btn:hover {
+  background: #4f46e5 !important;
+}
+
+.design-name-input {
+  background: #334155;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: white;
+  font-size: 13px;
+  width: 200px;
+  margin: 0 8px;
+}
+
+.design-name-input:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+
+.psd-upload {
+  background: #8b5cf6 !important;
+}
+
+.psd-upload:hover {
+  background: #7c3aed !important;
+}
+/* ========== ریسپانسیو ========== */
+@media screen and (max-width: 768px) {
+  .floating-panel.open {
+    display: none;
+  }
+
+  .workspace {
+    flex-direction: column;
+  }
+
+  .left-sidebar {
+    display: none;
+  }
+
+  /* 1. لایه‌ها در بالا */
+  .mobile-layers-panel {
+    display: block;
+    order: 1;
+    flex-shrink: 0;
+    max-height: 120px;
+    overflow-y: auto;
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    border-top: none;
+  }
+
+  /* 2. پنل تنظیمات سریع - زیر لایه‌ها */
+  .quick-settings-panel {
+    display: block;
+    order: 2;
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    padding: 8px 15px;
+    flex-shrink: 0;
+  }
+
+  /* 3. کانواس در پایین */
+  .canvas-area {
+    order: 3;
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .canvas-scroll {
+    padding: 5px !important;
+  }
+
+  #canvas {
+    margin: auto;
+  }
+
+  .toolbar {
+    min-height: 50px;
+    padding: 0 5px;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .toolbar > button:not(.hamburger-btn):not(.export-btn):not(.save-btn):not(.next-btn),
+  .toolbar > select:not(.mobile-visible),
+  .toolbar > .upload:not(.mobile-visible) {
+    display: none;
+  }
+
+  .mobile-menu-overlay,
+  .mobile-menu {
+    display: block;
+  }
+
+  .zoom-controls {
+    bottom: 20px;
+    right: 10px;
+  }
+
+  .floating-panel .panel {
+    padding: 15px;
+  }
+
+  .floating-panel .close-panel-btn {
+    display: flex;
+  }
+
+  .design-name-input {
+    width: 150px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .canvas-scroll {
+    padding: 5px !important;
+  }
+
+  .mobile-tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .template-option {
+    font-size: 12px;
+  }
+
+  .mobile-layers-panel {
+    max-height: 130px;
+  }
+
+  .mobile-layer-item {
+    min-width: 80px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .zoom-controls {
+    bottom: 15px;
+    right: 5px;
+  }
+
+  .zoom-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .zoom-btn.fit-btn {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .zoom-level {
+    min-width: 50px;
+    font-size: 12px;
+  }
+
+  .toolbar .export-btn span,
+  .toolbar .save-btn span,
+  .toolbar .next-btn span {
+    display: none;
+  }
+
+  .toolbar .export-btn,
+  .toolbar .save-btn,
+  .toolbar .next-btn {
+    padding: 6px 12px;
+    font-size: 16px;
+  }
+
+  .quick-settings-content {
+    gap: 8px;
+  }
+
+  .quick-delete {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .quick-placeholder {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  .design-name-input {
+    width: 120px;
+    font-size: 12px;
+  }
+}
+
+/* برای تبلت */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .left-sidebar {
+    width: 220px;
+  }
+
+  .toolbar button,
+  .upload {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .canvas-scroll {
+    padding: 15px !important;
+  }
+    .toolbar .hamburger-btn{
+    display: none;
+  }
+}
+
+/* برای صفحه‌های خیلی بزرگ */
+@media screen and (min-width: 1440px) {
+  .canvas-scroll {
+    padding: 50px !important;
+  }
+    .toolbar .hamburger-btn{
+    display: none;
+  }
+
+}
+
+/* ========================================== */
+/* Toast Notification Styles                  */
+/* ========================================== */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9999;
+  animation: toastSlideIn 0.3s ease;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: #1e293b;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  min-width: 280px;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toast-body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.toast-emoji {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.toast-text {
+  line-height: 1.5;
+}
+
+.toast-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #94a3b8;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: 0.2s;
+}
+
+.toast-close-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+/* انواع Toast */
+.toast-success {
+  border-right: 3px solid #10b981;
+}
+
+.toast-error {
+  border-right: 3px solid #ef4444;
+}
+
+.toast-warning {
+  border-right: 3px solid #f59e0b;
+}
+
+.toast-info {
+  border-right: 3px solid #3b82f6;
+}
+
+/* انیمیشن */
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* موبایل */
+@media screen and (max-width: 480px) {
+  .toast-container {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+  
+  .toast {
+    min-width: auto;
+    max-width: 100%;
+  }
+}

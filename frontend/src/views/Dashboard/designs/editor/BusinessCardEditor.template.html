@@ -1,0 +1,19 @@
+<div class="app-layout rtl">
+
+  <Sidebar
+    :isCollapsed="isSidebarCollapsed"
+    @toggle="toggleSidebar"
+  />
+
+  <main
+    class="main-content"
+    :class="{ 'sidebar-collapsed': isSidebarCollapsed }"
+  >
+
+    <BusinessCardEditorPro
+      :designIdProp="designId"
+    />
+
+  </main>
+
+</div>

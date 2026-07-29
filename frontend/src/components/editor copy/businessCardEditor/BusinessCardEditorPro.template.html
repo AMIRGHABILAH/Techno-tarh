@@ -1,0 +1,142 @@
+<div class="editor">
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+
+
+
+  <label for="name_input" style="display: flex; align-items: center;">نام کارت</label>
+  <input 
+  name="name_input"
+    class="name-input"
+    v-model="designName"
+    placeholder="نام کارت"
+    style="width: 10%;"
+  />
+
+      <select v-model="selectedSize" @change="changeCanvasSize" style="width: 15%;">
+  <option value="business">کارت ویزیت (900×500)</option>
+  <option value="instagram">پست اینستاگرام (1080×1080)</option>
+  <option value="story">استوری (1080×1920)</option>
+  <option value="banner">بنر (1200×628)</option>
+</select>
+
+    <button @click="addText">🅣 متن</button>
+    <button @click="addRect">▭ مستطیل</button>
+    <button @click="addCircle">⬤ دایره</button>
+    <button @click="addLine">／ خط</button>
+    <button @click="addTriangle">▲ مثلث</button>
+    <button @click="addEllipse">⬭ بیضی</button>
+    <button @click="addStar">★ ستاره</button>
+
+    <label class="upload">
+      📷 تصویر
+      <input type="file" @change="uploadImage"/>
+    </label>
+
+    <button @click="exportPNG">⬇ خروجی PNG</button>
+    <button @click="goToFinalize">مرحله بعد →</button>
+
+
+
+
+  </div>
+  <div v-if="isAdmin" class="template-option">
+    <label>
+      آیا این تمپلیت قالب آماده است؟
+      <input type="checkbox" v-model="isTemplate">
+     
+    </label>
+  </div>
+
+<div class="workspace">
+
+<div class="left-sidebar">
+  <!-- Settings -->
+  <div v-if="selectedNode" class="panel">
+
+    <h3>تنظیمات</h3>
+
+    <div class="color-picker-wrapper">
+      <label>رنگ</label>
+      <div class="color-box" @click="openColorPicker" :style="{ backgroundColor: fillColor }"></div>
+      <input type="color" ref="colorInput" v-model="fillColor" @input="updateFill" />
+    </div>
+
+    <div v-if="isText" class="field">
+      <label>اندازه فونت</label>
+      <input type="number" v-model="fontSize" @input="updateFont"/>
+    </div>
+
+    <button class="delete" @click="deleteNode">حذف</button>
+<div v-if="isText && isAdmin" class="field">
+
+
+  <select v-model="selectedPlaceholder" @change="applyPlaceholder" style="padding:9px;">
+    <option value="">متن معمولی</option>
+
+    <option
+      v-for="field in userFields"
+      :key="field.key"
+      :value="field.key"
+    >
+      {{ field.label }}
+    </option>
+
+  </select>
+</div>
+
+  </div>
+
+    <!-- Layers -->
+  <div class="layers-panel ">
+    <h3>لایه‌ها</h3>
+
+    <draggable
+      v-model="layersList"
+      item-key="id"
+      @end="onLayerDragEnd"
+      animation="200"
+    >
+
+      <template #item="{ element }">
+        <div
+          class="layer-item"
+          :class="{ active: activeLayer === element.id }"
+          @click="handleLayerSelection(element.id)"
+        >
+
+          <span class="layer-title">
+            ☰ {{ element.displayName }}
+          </span>
+
+          <div class="layer-actions">
+            <button
+              class="delete-layer"
+              @click.stop="removeLayer(element.id)"
+            >
+              ✕
+            </button>
+          </div>
+
+        </div>
+      </template>
+
+    </draggable>
+
+  </div>
+</div>
+
+
+  <!-- Canvas -->
+  <div class="canvas-area">
+    <div class="canvas-scroll">
+      <div id="canvas"></div>
+    </div>
+  </div>
+
+
+</div>
+
+
+</div>

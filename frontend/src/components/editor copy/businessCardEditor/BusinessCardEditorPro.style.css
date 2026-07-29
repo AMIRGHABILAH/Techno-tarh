@@ -1,0 +1,235 @@
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.color-picker-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 1em;
+  align-items: center;
+}
+
+.color-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.color-box:hover {
+  transform: scale(1.05);
+  border-color: #888;
+}
+
+input[type="color"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.left-sidebar{
+  width:260px;
+  display:flex;
+  flex-direction:column;
+  flex-shrink:0;
+  height:100%;
+  min-height:0;
+}
+
+
+.layers-panel{
+  flex:1;              /* مهم */
+  width:100%;
+  background:#1e293b;
+  padding:15px;
+  overflow-y:auto;     /* اسکرول */
+  border-left:1px solid #334155;
+  min-height:0;        /* خیلی مهم */
+}
+
+
+.layers-panel h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #e2e8f0;
+}
+
+.layer-item {
+  background:#334155;
+  padding:8px 12px;
+  margin-bottom:8px;
+  border-radius:6px;
+  cursor:grab;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:0.2s;
+}
+
+.layer-item:active{
+  cursor:grabbing;
+  background: #6366f1;
+border: 1px solid #818cf8;
+}
+
+.layer-item.active{
+  background:#6366f1;
+  border:1px solid #818cf8;
+}
+
+
+.sortable-ghost{
+  opacity:0.4;
+}
+
+
+.layer-actions button {
+  background: #64748b;
+  border: none;
+  color: white;
+  padding: 4px 6px;
+  margin-left: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.layer-actions button:hover {
+  background: #93a7c3;
+}
+
+.delete-layer {
+  background: #ef4444 !important;
+}
+
+.name-input{
+  padding: 9px;
+}
+
+.template-option{
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.editor{
+  direction:rtl;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#0f172a;
+  color:white;
+  font-family:sans-serif;
+  overflow:hidden;
+}
+
+
+/* toolbar */
+
+.toolbar {
+  flex-shrink: 0;
+  height: 60px;
+  display: flex;
+  align-items: stretch;
+  padding: 0 16px;
+
+  border-bottom: 1px solid #333;
+  overflow: hidden;
+}
+
+
+.toolbar button,
+.upload{
+
+  background:#334155;
+  border:none;
+  padding:8px 12px;
+  color:white;
+  cursor:pointer;
+  border-radius:6px;
+  margin: 0 3px;
+
+}
+
+.upload input{
+  display:none;
+}
+
+
+/* workspace */
+
+.workspace{
+  flex:1;
+  display:flex;
+  overflow:hidden;
+  min-height:0;
+}
+
+
+
+/* panel */
+
+.panel{
+  width:100%;
+  background:#1e293b;
+  padding:20px;
+  overflow-y:auto;
+  border-right:1px solid #334155;
+  flex-shrink:0;
+}
+
+
+.field{
+  margin-bottom:15px;
+  flex-direction:column;
+  display: flex;
+}
+
+.delete{
+
+  background:#ef4444;
+  border:none;
+  padding:10px;
+  width:100%;
+  cursor:pointer;
+
+}
+
+
+/* canvas */
+
+.canvas-area {
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#0f172a;
+  min-width:0;
+  min-height:0;
+  overflow:hidden;
+}
+
+.canvas-scroll {
+  width:100%;
+  height:100%;
+  overflow:auto;
+  padding:40px;
+  display:block;   /* ✅ مهم */
+}
+
+
+#canvas{
+  background:#ffffff;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  display:block;
+  flex-shrink:0; /* حل مشکل اسکرول افقی */
+}
+
+
+

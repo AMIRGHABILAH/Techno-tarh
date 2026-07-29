@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "konva": "^10.2.3",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "vue-konva": "^3.4.0",
+    "vue-router": "^5.0.2",
+    "vuedraggable": "^4.1.0"
+  }
+}

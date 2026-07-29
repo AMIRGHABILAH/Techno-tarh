@@ -1,0 +1,39 @@
+<div>
+  <MainLayout>
+    <div class="transaction-list">
+        <h2>لیست تراکنش‌ها</h2>
+        
+        <div v-if="loading" class="loading">در حال بارگذاری...</div>
+
+        <div v-else-if="transactions.length === 0" class="empty-state">
+        تراکنش یافت نشد.
+        </div>
+    
+            <table v-else class="table">
+            <thead>
+                <tr>
+                <th>تاریخ</th>
+                <th>مبلغ</th>
+                <th>نوع</th>
+                <th>موجودی بعد از تراکنش</th>
+
+                <th>توضیحات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="tx in transactions" :key="tx.id">
+                <td>{{ formatDate(tx.created_at) }}</td>
+                <td :class="tx.type === 'charge' ? 'text-success' : 'text-danger'">
+                    {{ formatPrice(tx.amount) }} تومان
+                </td>
+                <td>{{ tx.type === 'charge' ? 'شارژ' : 'برداشت' }}</td>
+                <td>{{ formatPrice(tx.balance_after) }} تومان</td>
+
+                <td>{{ tx.description }}</td>
+                </tr>
+            </tbody>
+            </table>
+        
+    </div>
+  </MainLayout>
+</div>

@@ -1,0 +1,115 @@
+  <div class="auth-page">
+    <div class="auth-card">
+
+      <!-- برند -->
+      <div class="brand">
+         <a href="/" style="text-decoration: none;"><h1 class="logo">🎴 تکنوطرح</h1></a>
+        <p class="tagline">طراحی کارت ویزیت حرفه‌ای</p>
+      </div>
+
+      <!-- پیام خطا فقط وقتی popup بسته است -->
+      <transition name="fade">
+        <div v-if="!popup && mainError" class="error-box">
+          ⚠️ {{ mainError }}
+        </div>
+      </transition>
+
+      <!-- فرم شماره موبایل -->
+      <form class="auth-form" @submit.prevent="submitPhone">
+        <div class="field">
+          <input v-model="phone" type="text" required placeholder=" " dir="rtl"  />
+          <label>شماره موبایل</label>
+          <span class="field-icon">📱</span>
+        </div>
+
+        <div class="otp-login">
+          <button type="button" class="btn-otp" @click="loginWithOtp" :disabled="isLoading || !isPhoneValid ">
+            ورود با رمز یکبار مصرف
+          </button>
+        </div>
+
+        <button class="btn-primary" :disabled="isLoading || !isPhoneValid">
+          <span v-if="!isLoading">ادامه</span>
+          <span v-else class="loader"></span>
+        </button>
+      </form>
+
+    </div>
+
+    <!-- پس‌زمینه -->
+    <div class="gradient-bg">
+      <div class="gradient-sphere"></div>
+      <div class="gradient-sphere"></div>
+      <div class="gradient-sphere"></div>
+    </div>
+
+    <!-- پاپ‌آپ ورود با رمز -->
+    <div v-if="popup === 'password-login'" class="popup">
+      <div class="popup-card">
+
+        <h3>ورود</h3>
+
+        <div v-if="popupError" class="error-box">⚠️ {{ popupError }}</div>
+
+        <div class="field">
+          <input v-model="password" type="password" placeholder=" " :disabled="isLoading" />
+          <label>رمز عبور</label>
+        </div>
+
+        <button class="btn-primary" @click="passwordLogin" :disabled="isLoading">
+          <span v-if="!isLoading">ورود</span>
+          <span v-else class="loader"></span>
+        </button>
+
+        <button class="popup-close" @click="closePopup">بستن</button>
+
+      </div>
+    </div>
+
+    <!-- پاپ‌آپ OTP -->
+    <div v-if="popup === 'otp'" class="popup">
+      <div class="popup-card">
+        <h3>تایید شماره</h3>
+
+        <div v-if="popupError" class="error-box">⚠️ {{ popupError }}</div>
+
+        <p class="subtitle">کد به {{ phone }} ارسال شد</p>
+
+        <div class="field">
+          <input v-model="otp" maxlength="4" placeholder=" " dir="ltr" :disabled="isLoading" />
+          <label>کد تایید</label>
+        </div>
+
+        <button class="btn-primary" @click="verifyOtp" :disabled="isLoading">
+          <span v-if="!isLoading">تایید</span>
+          <span v-else class="loader"></span>
+        </button>
+
+        <button class="popup-close" @click="closePopup">بستن</button>
+
+      </div>
+    </div>
+
+    <!-- پاپ‌آپ ساخت رمز -->
+    <div v-if="popup === 'password-set'" class="popup">
+      <div class="popup-card">
+        <h3>ساخت رمز عبور</h3>
+
+        <div v-if="popupError" class="error-box">⚠️ {{ popupError }}</div>
+
+        <div class="field">
+          <input v-model="password" type="password" placeholder=" " :disabled="isLoading" />
+          <label>رمز عبور جدید</label>
+        </div>
+
+        <button class="btn-primary" @click="setPassword" :disabled="isLoading">
+          <span v-if="!isLoading">ثبت</span>
+          <span v-else class="loader"></span>
+        </button>
+
+        <button class="popup-close" @click="closePopup">بستن</button>
+
+      </div>
+    </div>
+
+  </div>

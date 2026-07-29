@@ -1,0 +1,255 @@
+/* Layout base */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 30%, #0f172a, #020617);
+}
+
+/* Card */
+.auth-card {
+  width: 420px;
+  padding: 42px;
+  border-radius: 22px;
+  backdrop-filter: blur(25px);
+  background: rgba(15, 23, 42, 0.7);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  animation: cardFadeIn 0.6s ease;
+}
+@keyframes cardFadeIn {
+  from {opacity:0; transform:translateY(30px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+/* Brand section */
+.brand {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.logo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #38bdf8, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.tagline {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: #cbd5e1;
+}
+
+/* Error message */
+.error-box {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-align: center;
+  color: #f87171;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+.fade-enter-active,
+.fade-leave-active { transition: opacity 0.3s ease; }
+.fade-enter-from,
+.fade-leave-to { opacity: 0; }
+
+/* Form */
+.auth-form {
+  margin-top: 10px;
+}
+
+/* Fields */
+.field {
+  position: relative;
+  margin-bottom: 22px;
+}
+.field input {
+  width: 100%;
+  padding: 14px 44px 14px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+.field input:focus {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.8);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+  background: rgba(255,255,255,0.09);
+}
+.field label {
+  position: absolute;
+  right: 42px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: 0.3s;
+}
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  top: -10px;
+  right: 20px;
+  font-size: 0.75rem;
+  background: #0f172a;
+  padding: 0 5px;
+  color: #38bdf8;
+}
+.field-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+
+/* Buttons */
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(14,165,233,0.25);
+  transition: all 0.3s;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px rgba(56,189,248,0.45);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loader {
+  border: 3px solid rgba(255,255,255,0.25);
+  border-top: 3px solid #38bdf8;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+@keyframes spin {100%{transform:rotate(360deg)}}
+
+/* Popup Layer */
+.popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 50;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {from{opacity:0}to{opacity:1}}
+.popup-card {
+  width: 340px;
+  background: rgba(24, 33, 55, 0.9);
+  border-radius: 18px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  animation: scaleIn 0.35s cubic-bezier(.18,.89,.32,1.28);
+}
+@keyframes scaleIn {
+  from {transform: scale(0.85); opacity:0;}
+  to {transform: scale(1); opacity:1;}
+}
+.popup-card h3 {
+  text-align: center;
+  margin-bottom: 18px;
+  color: #e2e8f0;
+}
+.subtitle {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 14px;
+}
+
+/* Close button */
+.popup-close {
+  margin-top: 14px;
+  background: none;
+  border: none;
+  color: #38bdf8;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.25s;
+}
+.popup-close:hover {
+  text-decoration: underline;
+  color: #7dd3fc;
+}
+
+/* otp button */
+
+.otp-login {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.btn-otp {
+  background: none;
+  border: none;
+  color: #38bdf8;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn-otp:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
+}
+
+.btn-otp:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* Background animation */
+.gradient-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gradient-sphere {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #38bdf8, rgba(168,85,247,0.4));
+  filter: blur(90px);
+  animation: float 20s linear infinite;
+  opacity: 0.35;
+}
+.gradient-sphere:nth-child(1) { width: 400px; height: 400px; top: 10%; left: 5%; animation-delay: 0s; }
+.gradient-sphere:nth-child(2) { width: 300px; height: 300px; bottom: 15%; right: 10%; animation-delay: 5s; }
+.gradient-sphere:nth-child(3) { width: 500px; height: 500px; top: 60%; left: 50%; animation-delay: 10s; }
+
+
+
+@keyframes float {
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-30px) scale(1.05);}
+}

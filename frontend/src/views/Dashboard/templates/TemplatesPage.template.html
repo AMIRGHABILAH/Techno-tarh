@@ -1,0 +1,74 @@
+  <MainLayout>
+    <div class="templates-page">
+
+      <div class="header">
+        <h1>قالب‌های آماده</h1>
+        <p>یکی از قالب‌ها را انتخاب کنید و یک نسخه جدید بسازید</p>
+      </div>
+
+      <!-- loading skeleton -->
+
+      <div v-if="loading" class="templates-grid">
+        <div v-for="n in 6" :key="n" class="template-skeleton"></div>
+      </div>
+
+      <!-- templates -->
+
+      <div v-else class="templates-grid">
+
+<div
+  v-for="tpl in templates"
+  :key="tpl.id"
+  class="template-card"
+  @click="openTemplate(tpl)"
+>
+
+  <div class="thumb">
+
+    <img
+      v-if="getThumbnail(tpl)"
+      :src="getThumbnail(tpl)"
+      alt="Template"
+    />
+
+    <div v-else class="no-thumb">
+      بدون تصویر
+    </div>
+
+    <div class="badge">قالب</div>
+
+    <div class="overlay">
+      <button class="use-btn">استفاده از قالب</button>
+    </div>
+
+  </div>
+
+  <!-- اطلاعات زیر کارت -->
+  <div class="info">
+
+    <div class="name">
+      {{ tpl.name }}
+    </div>
+
+    <div class="meta">
+
+      <span class="meta-item">
+        📅 {{ formatDate(tpl.updated_at) }}
+      </span>
+
+      <span class="meta-item">
+        📐 1080×1080
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+      </div>
+
+    </div>
+</MainLayout>

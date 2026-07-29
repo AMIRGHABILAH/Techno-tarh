@@ -1,0 +1,99 @@
+
+
+<MainLayout>
+    <!-- هدر -->
+    <header class="content-header">
+      <div>
+        <h1>خوش آمدید، {{ user?.username }}! 👋</h1>
+        <p class="welcome-text">به پنل مدیریت طراحی کارت ویزیت خود خوش آمدید</p>
+      </div>
+    <button class="btn-primary" @click="createNewDesign">
+    + طراحی جدید
+    </button>
+
+    </header>
+
+    <!-- کارت‌های آمار -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🎨</div>
+        <div class="stat-info">
+          <h3>{{ stats.totalDesigns }}</h3>
+          <p>کل طراحی‌ها</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📁</div>
+        <div class="stat-info">
+          <h3>{{ stats.templates }}</h3>
+          <p>قالب‌های آماده</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-info">
+          <h3>{{ stats.recentEdits }}</h3>
+          <p>ویرایش‌های اخیر</p>
+        </div>
+      </div>
+<div class="stat-card">
+  <div class="stat-icon">💰</div>
+  <div class="stat-info">
+    <h3>{{ walletBalance.toLocaleString() }} تومان</h3>
+    <p>میزان شارژ</p>
+  </div>
+</div>
+
+    </div>
+
+    <!-- طراحی‌های اخیر -->
+    <section class="recent-section">
+      <div class="section-header">
+        <h2>🆕 طراحی‌های اخیر</h2>
+        <router-link to="dashboard/designs" class="view-all">
+          مشاهده همه
+          <span class="arrow-left">←</span>
+        </router-link>
+      </div>
+
+      <div v-if="loading" class="loading-state">
+        <div class="spinner"></div>
+      </div>
+
+      <div v-else-if="recentDesigns.length === 0" class="empty-state">
+        <p>هنوز طراحی‌ای ایجاد نکرده‌اید</p>
+        <button @click="createNewDesign" class="btn-outline">شروع طراحی</button>
+      </div>
+
+      <div v-else class="designs-grid">
+        <div v-for="design in recentDesigns" :key="design.id" class="design-card">
+          <div class="design-thumbnail" @click="editDesign(design.id)">
+            <img v-if="design.thumbnail" :src="design.thumbnail" :alt="design.name" loading="lazy">
+            <div v-else class="no-thumbnail">
+              <span>🎴</span>
+            </div>
+            <span v-if="design.is_template" class="badge">قالب</span>
+          </div>
+          <div class="design-info">
+            <h3>{{ design.name }}</h3>
+            <p class="design-date">{{ formatDate(design.updated_at) }}</p>
+          </div>
+          <div class="design-actions">
+            <button @click="editDesign(design.id)" class="icon-btn" title="ویرایش">✏️</button>
+            <button @click="duplicateDesign(design)" class="icon-btn" title="کپی">📋</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toast Notification -->
+<div class="toast-container" v-if="toastVisible">
+  <div :class="['toast', `toast-${toastType}`]">
+    <div class="toast-body">
+      <span class="toast-emoji">{{ toastType === 'success' ? '✅' : toastType === 'error' ? '❌' : toastType === 'warning' ? '⚠️' : 'ℹ️' }}</span>
+      <span class="toast-text">{{ toastMessage }}</span>
+    </div>
+    <button class="toast-close-btn" @click="toastVisible = false">×</button>
+  </div>
+</div>
+</MainLayout>
