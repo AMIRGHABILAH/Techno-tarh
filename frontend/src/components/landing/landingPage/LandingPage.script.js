@@ -18,28 +18,23 @@
 import { useAuthStore } from "../../../stores/auth"
 
 export default {
+  setup() {
+    const auth = useAuthStore()
 
-setup(){
+    const scrollTo = (id) => {
+      const el = document.getElementById(id)
+      if (el) {
+        el.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        })
+      }
+    }
 
-const auth = useAuthStore()
-
-const scrollTo = (id) => {
-  const el = document.getElementById(id)
-
-  if(el){
-    el.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    })
+    return {
+      isLoggedIn: auth.isAuthenticated,
+      scrollTo
+    }
   }
-}
-
-return {
-  isLoggedIn: auth.isAuthenticated,
-  scrollTo
-}
-
-}
-
 }
 

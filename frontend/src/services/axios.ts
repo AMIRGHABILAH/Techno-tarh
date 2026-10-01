@@ -1,5 +1,4 @@
 // src/services/axios.ts
-
 import axios, { type AxiosError, type AxiosResponse } from "axios";
 import { useAuthStore } from "../stores/auth";
 import type { AxiosRequestConfig } from "axios"; 
@@ -9,20 +8,15 @@ interface RetryConfig extends AxiosRequestConfig {
 }
 
 const api = axios.create({
-  baseURL: "/api/", 
+  baseURL: "/api/",
 });
 
-// =================================================================
-// 🚀 Request Interceptor: افزودن Access Token (با exception برای auth)
-// =================================================================
 api.interceptors.request.use((config) => {
   const auth = useAuthStore();
-  
-  // 🚨 به درخواست‌های auth توکن اضافه نکن
   const isAuthRequest = config.url?.includes('auth/register/') || 
                         config.url?.includes('auth/token/');
   
-  if (auth.accessToken && !isAuthRequest) {  // ✅ فقط برای غیر auth درخواست‌ها
+  if (auth.accessToken && !isAuthRequest) {
     config.headers = config.headers || {};
     config.headers.Authorization = `Bearer ${auth.accessToken}`; 
   }
@@ -30,9 +24,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// =================================================================
-// 🛡️ Response Interceptor: مدیریت 401 و Auto-Refresh
-// =================================================================
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
@@ -49,7 +40,6 @@ api.interceptors.response.use(
     const auth = useAuthStore();
     const originalRequest = error.config as RetryConfig;
 
-    // 🚨 به درخواست‌های auth توجه نکن
     const isAuthRequest = originalRequest.url?.includes('auth/register/') || 
                           originalRequest.url?.includes('auth/token/');
 
@@ -57,7 +47,7 @@ api.interceptors.response.use(
       error.response?.status === 401 &&
       !originalRequest._retry &&
       auth.refreshToken &&
-      !isAuthRequest  // ✅ درخواست‌های auth رو نادیده بگیر
+      !isAuthRequest
     ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
