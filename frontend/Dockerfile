@@ -2,14 +2,17 @@ FROM node:20-bookworm as build-stage
 
 WORKDIR /app
 
+# تنظیم رجیستری ایرانی
+RUN npm config set registry https://mirror-npm.runflare.com
+
 # نصب vite به صورت global
 RUN npm install -g vite
 
 COPY package*.json ./
-RUN npm install --legacy-peer-deps --registry https://registry.npmjs.org/
+RUN npm install --legacy-peer-deps
 
 # نصب صریح rollup برای معماری x64
-RUN npm install @rollup/rollup-linux-x64-gnu --registry https://registry.npmjs.org/
+RUN npm install @rollup/rollup-linux-x64-gnu
 
 COPY . .
 RUN npm run build

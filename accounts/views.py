@@ -266,3 +266,52 @@ from .serializers import MyTokenSerializer
 
 class MyTokenView(TokenObtainPairView):
     serializer_class = MyTokenSerializer
+
+
+
+
+
+
+
+
+
+
+
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def verify_code(request):
+    phone = request.data.get("phone_number")
+    code = request.data.get("code")
+
+    otp = OTPCode.objects.filter(
+        phone_number=phone,
+        code=code,
+        is_used=False
+    ).last()
+
+    if not otp:
+        return Response({"error": "کد نامعتبر است"}, status=400)
+
+    otp.is_used = True
+    otp.save()
+
+    user, created = User.objects.get_or_create(
+        phone_number=phone,
+        defaults={
+            "username": "USR" + phone
+        }
+    )
+
+    if not user.password:
+        return Response({
+            "need_set_password": True
+        })
+
+    refresh = RefreshToken.for_user(user)
+
+    return Response({
+        "access": str(refresh.access_token),
+        "refresh": str(refresh)
+    })

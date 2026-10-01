@@ -376,6 +376,8 @@ CORS_ALLOWED_ORIGINS = [
 if not DEBUG:
     CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
+
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
