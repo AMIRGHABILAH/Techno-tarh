@@ -1,4 +1,3 @@
-
 <div class="landing">
 
   <!-- ===== Header ===== -->
@@ -200,29 +199,8 @@
     </div>
 
     <div class="footer-bottom">
-      <p>© ۱۴۰۴ تکنو طرح - تمامی حقوق محفوظ است.</p>
+      <p>© ۱۴۰۵ تکنو طرح - تمامی حقوق محفوظ است.</p>
     </div>
   </footer>
 
 </div>
-
-
-<script>
-import { useAuthStore } from '@/stores/auth'
-import { computed } from 'vue'
-
-export default {
-  name: 'LandingPage',
-  setup() {
-    const auth = useAuthStore()
-    const isLoggedIn = computed(() => auth.isAuthenticated)
-
-    function scrollTo(id) {
-      const el = document.getElementById(id)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }
-
-    return { isLoggedIn, scrollTo }
-  }
-}
-</script>
